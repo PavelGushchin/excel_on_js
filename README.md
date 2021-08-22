@@ -1,1 +1,3 @@
-# Microsoft Excel clone on javascript
+# Clone of Microsoft Excel
+
+### The project is under development
