@@ -1,0 +1,36 @@
+{
+  "name": "excel_on_js",
+  "version": "1.0.0",
+  "description": "Clone of Microsoft Excel on JavaScript",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack --mode=production --node-env=production",
+    "build:dev": "webpack --mode=development",
+    "build:prod": "webpack --mode=production --node-env=production",
+    "watch": "webpack --watch",
+    "serve": "webpack serve"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PavelGushchin/excel_on_js.git"
+  },
+  "keywords": [
+    "js",
+    "javascript",
+    "excel"
+  ],
+  "author": "Pavel Gushchin <pavel_gushchin@mail.ru>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/PavelGushchin/excel_on_js/issues"
+  },
+  "homepage": "https://github.com/PavelGushchin/excel_on_js#readme",
+  "devDependencies": {
+    "@webpack-cli/generators": "^2.3.0",
+    "html-webpack-plugin": "^5.3.2",
+    "mini-css-extract-plugin": "^2.2.0",
+    "webpack": "^5.51.1",
+    "webpack-cli": "^4.8.0"
+  }
+}
