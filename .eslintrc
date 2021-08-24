@@ -1,5 +1,6 @@
 {
   "parser": "@babel/eslint-parser",
+  "extends": "google",
   "rules": {
 
   }
