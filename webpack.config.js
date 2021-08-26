@@ -24,7 +24,7 @@ const config = {
   },
   devtool: isDevelopment ? 'source-map' : false,
   resolve: {
-    extensions: ['js'],
+    extensions: ['.js'],
     alias: {
       '@': path.resolve(__dirname, 'src'),
       '@core': path.resolve(__dirname, 'src/core'),
