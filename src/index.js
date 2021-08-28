@@ -1,4 +1,17 @@
-import {ExcelComponent} from './components/ExcelComponent';
+import {Excel} from './core/Excel';
+import {HeaderComponent} from './components/HeaderComponent';
+import {ToolbarComponent} from './components/ToolbarComponent';
+import {FormulaComponent} from './components/FormulaComponent';
+import {TableComponent} from './components/TableComponent';
 import './scss/index.scss';
 
-new ExcelComponent().render('#app');
+const excel = new Excel({
+  components: [
+    new HeaderComponent,
+    new ToolbarComponent,
+    new FormulaComponent,
+    new TableComponent,
+  ],
+});
+
+excel.render('#app');

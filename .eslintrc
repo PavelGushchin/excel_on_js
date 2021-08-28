@@ -2,6 +2,7 @@
   "parser": "@babel/eslint-parser",
   "extends": "google",
   "rules": {
-    "require-jsdoc": "off"
+    "require-jsdoc": "off",
+    "max-len": "off"
   }
 }

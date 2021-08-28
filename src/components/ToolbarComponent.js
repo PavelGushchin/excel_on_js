@@ -1,4 +1,4 @@
-import {Component} from '../core/Component';
+import {Component} from './Component';
 
 export class ToolbarComponent extends Component {
   toHtml() {
