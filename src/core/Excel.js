@@ -4,14 +4,18 @@ export class Excel {
   }
 
   render(selector) {
-    const $excelDiv = document.createElement('div');
-    $excelDiv.classList.add('excel');
+    const $mainDiv = document.createElement('div');
+    $mainDiv.classList.add('excel');
 
     this.components.forEach((component) => {
-      $excelDiv.innerHTML += component.toHtml();
+      const $componentDiv = document.createElement('div');
+      $componentDiv.classList.add(component.className);
+      $componentDiv.innerHTML = component.toHtml();
+
+      $mainDiv.append($componentDiv);
     });
 
     const $rootElement = document.querySelector(selector);
-    $rootElement.append($excelDiv);
+    $rootElement.append($mainDiv);
   }
 }
