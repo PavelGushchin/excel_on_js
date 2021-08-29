@@ -1,9 +1,11 @@
 import {Component} from './Component';
 
 export class HeaderComponent extends Component {
-  className = 'excel__header';
+  constructor() {
+    super('div', 'excel__header');
+  }
 
-  toHtml() {
+  content() {
     return `
       <input type="text" class="input" value="Новая таблица" />
       <div>

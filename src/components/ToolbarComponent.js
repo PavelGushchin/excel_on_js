@@ -1,9 +1,11 @@
 import {Component} from './Component';
 
 export class ToolbarComponent extends Component {
-  className = 'excel__toolbar';
+  constructor() {
+    super('div', 'excel__toolbar');
+  }
 
-  toHtml() {
+  content() {
     return `
       <div class="button">
         <i class="material-icons">format_align_left</i>

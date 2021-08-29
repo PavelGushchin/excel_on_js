@@ -1,9 +1,11 @@
 import {Component} from './Component';
 
 export class TableComponent extends Component {
-  className = 'excel__table';
+  constructor() {
+    super('div', 'excel__table');
+  }
 
-  toHtml() {
+  content() {
     return `
       <div class="row">
         <div class="row-info"></div>
