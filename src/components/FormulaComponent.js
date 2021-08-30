@@ -13,11 +13,11 @@ export class FormulaComponent extends Component {
   }
 
   onInput(event) {
-    console.log(this.$root);
     console.log(event.target.textContent.trim());
   }
 
   onClick(event) {
+    console.log(this.$root);
     console.log(event.target);
   }
 }

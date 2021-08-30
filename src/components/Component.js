@@ -2,11 +2,15 @@ import {capitalizeFirstLetter} from '../core/utils';
 
 export class Component {
   constructor(rootTag, rootClass, listeners = []) {
+    this.rootTag = rootTag;
+    this.rootClass = rootClass;
+    this.listeners = listeners;
+
     this.$root = document.createElement(rootTag);
     this.$root.classList.add(rootClass);
     this.$root.innerHTML = this.content();
 
-    this.initDOMListeners(listeners);
+    this.initDOMListeners();
   }
 
   content() {
@@ -21,17 +25,30 @@ export class Component {
     return this.$root;
   }
 
-  initDOMListeners(listeners) {
-    this.listeners = listeners;
-
+  initDOMListeners() {
     this.listeners.forEach((listener) => {
-      const methodName = 'on' + capitalizeFirstLetter(listener);
+      const methodName = getMethodName(listener);
 
       if (! this[methodName]) {
-        throw new Error(`Method "${methodName}" is not defined!`);
+        throw new Error(`Method "${methodName}" is not defined in ${this.rootClass}!`);
       }
 
-      this.$root.addEventListener(listener, this[methodName].bind(this));
+      this[methodName] = this[methodName].bind(this);
+      this.$root.addEventListener(listener, this[methodName]);
     });
   }
+
+  removeDOMListeners() {
+    this.listeners.forEach((listener) => {
+      const methodName = getMethodName(listener);
+
+      this.$root.removeEventListener(listener, this[methodName]);
+    });
+  }
+}
+
+
+function getMethodName(eventName) {
+  // click => onClick
+  return 'on' + capitalizeFirstLetter(eventName);
 }
