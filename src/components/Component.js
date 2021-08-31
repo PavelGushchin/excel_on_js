@@ -2,35 +2,32 @@ import {capitalizeFirstLetter} from '../core/utils';
 
 export class Component {
   constructor(rootTag, rootClass, listeners = []) {
-    this.rootTag = rootTag;
-    this.rootClass = rootClass;
-    this.listeners = listeners;
-
     this.$root = document.createElement(rootTag);
     this.$root.classList.add(rootClass);
     this.$root.innerHTML = this.content();
 
-    this.initDOMListeners();
+    this.listeners = listeners;
+    this.registerDOMListeners();
   }
 
   content() {
-    throw new Error('You have to override this method!');
+    return `You have to override this method for ${this.$root}!`;
   }
 
-  toHtml() {
+  getHtml() {
     return this.$root.outerHTML;
   }
 
-  getRoot() {
+  getRootElement() {
     return this.$root;
   }
 
-  initDOMListeners() {
+  registerDOMListeners() {
     this.listeners.forEach((listener) => {
       const methodName = getMethodName(listener);
 
       if (! this[methodName]) {
-        throw new Error(`Method "${methodName}" is not defined in ${this.rootClass}!`);
+        throw new Error(`Method "${methodName}" is not defined in ${this.$root}!`);
       }
 
       this[methodName] = this[methodName].bind(this);

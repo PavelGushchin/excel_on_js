@@ -7,7 +7,7 @@ export class Excel {
     const $mainContainer = document.querySelector(selector);
 
     this.components.forEach((component) => {
-      $mainContainer.append(component.getRoot());
+      $mainContainer.append(component.getRootElement());
     });
   }
 }
