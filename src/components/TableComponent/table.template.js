@@ -35,21 +35,31 @@ function convertToLetter(_, index) {
 
 function convertToHeaderCell(letter) {
   return `
-    <div class="column">${letter}</div>
+      <div class="column">
+          ${letter}
+          <div class="col-resize" data-resize="col"></div>
+      </div>
   `;
 }
 
 function convertToCell() {
   return `
-    <div class="cell" contenteditable></div>
+      <div class="cell" contenteditable></div>
   `;
 }
 
 function createRow(content, index = 0) {
+  const resizer = '<div class="row-resize" data-resize="row"></div>';
+
   return `
-    <div class="row">
-      <div class="row-info">${index ? index : ''}</div>
-      <div class="row-data">${content}</div>
-    </div>
+      <div class="row">
+          <div class="row-info">
+              ${index ? index + resizer : ''}
+          </div>
+          
+          <div class="row-data">
+              ${content}
+          </div>
+      </div>
   `;
 }
