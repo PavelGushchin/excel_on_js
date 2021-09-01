@@ -6,8 +6,7 @@ export class Component {
     this.$root.classList.add(rootClass);
     this.$root.innerHTML = this.content();
 
-    this.listeners = listeners;
-    this.registerDOMListeners();
+    this.registerDOMListeners(listeners);
   }
 
   content() {
@@ -22,7 +21,9 @@ export class Component {
     return this.$root;
   }
 
-  registerDOMListeners() {
+  registerDOMListeners(listeners) {
+    this.listeners = listeners;
+
     this.listeners.forEach((listener) => {
       const methodName = getMethodName(listener);
 
@@ -35,11 +36,16 @@ export class Component {
     });
   }
 
-  removeDOMListeners() {
-    this.listeners.forEach((listener) => {
-      const methodName = getMethodName(listener);
+  removeDOMListeners(listeners = []) {
+    listeners.forEach((listenerToRemove) => {
+      this.listeners.forEach((registeredListener, index) => {
+        if (listenerToRemove === registeredListener) {
+          const methodName = getMethodName(registeredListener);
+          this.$root.removeEventListener(registeredListener, this[methodName]);
 
-      this.$root.removeEventListener(listener, this[methodName]);
+          this.listeners.splice(index, 1);
+        }
+      });
     });
   }
 }
