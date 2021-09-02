@@ -32,27 +32,39 @@ export class TableComponent extends Component {
 
       if (whatResizing === 'col') {
         const delta = e.pageX - coords.right;
+        newWidth = coords.width + delta + 'px';
+
         $resizer.style.right = -delta + 'px';
         $resizer.style.bottom = '-3000px';
-
-        newWidth = coords.width + delta + 'px';
       } else if (whatResizing === 'row') {
         const delta = e.pageY - coords.bottom;
+        newHeight = coords.height + delta + 'px';
+
         $resizer.style.bottom = -delta + 'px';
         $resizer.style.right = '-4000px';
-
-        newHeight = coords.height + delta + 'px';
-      } else {
-        throw new Error('Unknown type of resized element: ' + whatResizing);
       }
     };
 
-    document.onmouseup = (e) => {
+    document.onmouseup = () => {
       console.log('MouseUP event');
       document.onmousemove = null;
       document.onmouseup = null;
-      $resizer.style['opacity'] = 0;
-      $resizedHeaderCell.style.width = newWidth;
+
+      if (whatResizing === 'col') {
+        const cellsToResize = this.$root.querySelectorAll(`[data-x="${$resizedHeaderCell.dataset.x}"]`);
+
+        $resizedHeaderCell.style.width = newWidth;
+        cellsToResize.forEach(($cell) => {
+          $cell.style.width = newWidth;
+        });
+
+        $resizer.style.right = '0px';
+      } else if (whatResizing === 'row') {
+        $resizedHeaderCell.style.height = newHeight;
+        $resizer.style.bottom = '0px';
+      }
+
+      $resizer.style.opacity = '0';
     };
   }
 }
