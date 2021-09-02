@@ -33,26 +33,26 @@ function convertToLetter(_, index) {
   return String.fromCharCode(CODES.A + index);
 }
 
-function convertToHeaderCell(letter) {
+function convertToHeaderCell(letter, index) {
   return `
-      <div class="column">
+      <div class="column" data-resizable="true" data-x="${index}">
           ${letter}
-          <div class="col-resize" data-resize="col"></div>
+          <div class="col-resizer" data-what-resizing="col"></div>
       </div>
   `;
 }
 
-function convertToCell() {
+function convertToCell(_, index) {
   return `
-      <div class="cell" contenteditable></div>
+      <div class="cell" contenteditable data-x="${index}"></div>
   `;
 }
 
 function createRow(content, index = 0) {
-  const resizer = '<div class="row-resize" data-resize="row"></div>';
+  const resizer = '<div class="row-resizer" data-what-resizing="row"></div>';
 
   return `
-      <div class="row">
+      <div class="row" data-resizable="true">
           <div class="row-info">
               ${index ? index + resizer : ''}
           </div>

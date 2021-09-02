@@ -3,7 +3,7 @@ import {createTable} from './table.template';
 
 export class TableComponent extends Component {
   constructor() {
-    super('div', 'excel__table', ['mousedown', 'mouseup']);
+    super('div', 'excel__table', ['mousedown']);
   }
 
   content() {
@@ -11,19 +11,48 @@ export class TableComponent extends Component {
   }
 
   onMousedown(event) {
-    if (event.target.dataset.resize) {
-      console.log('Resizing: ', event.target.dataset.resize);
-      console.log('MouseDOWN event');
-      this.registerDOMListeners(['mousemove']);
+    console.log('MouseDOWN event');
+
+    const whatResizing = event.target.dataset.whatResizing;
+
+    if (whatResizing === undefined) {
+      return;
     }
-  }
 
-  onMousemove(event) {
-    console.log('MouseMOVE event');
-  }
+    const $resizer = event.target;
+    const $resizedHeaderCell = $resizer.closest('[data-resizable="true"]');
+    const coords = $resizedHeaderCell.getBoundingClientRect();
+    let newWidth;
+    let newHeight;
 
-  onMouseup(event) {
-    console.log('MouseUP event');
-    this.removeDOMListeners(['mousemove']);
+    $resizer.style.opacity = '1';
+
+    document.onmousemove = (e) => {
+      console.log('MouseMOVE event');
+
+      if (whatResizing === 'col') {
+        const delta = e.pageX - coords.right;
+        $resizer.style.right = -delta + 'px';
+        $resizer.style.bottom = '-3000px';
+
+        newWidth = coords.width + delta + 'px';
+      } else if (whatResizing === 'row') {
+        const delta = e.pageY - coords.bottom;
+        $resizer.style.bottom = -delta + 'px';
+        $resizer.style.right = '-4000px';
+
+        newHeight = coords.height + delta + 'px';
+      } else {
+        throw new Error('Unknown type of resized element: ' + whatResizing);
+      }
+    };
+
+    document.onmouseup = (e) => {
+      console.log('MouseUP event');
+      document.onmousemove = null;
+      document.onmouseup = null;
+      $resizer.style['opacity'] = 0;
+      $resizedHeaderCell.style.width = newWidth;
+    };
   }
 }
