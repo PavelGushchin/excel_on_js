@@ -1,5 +1,7 @@
 import {Component} from '../Component';
 import {createTable} from './table.template';
+import {css} from '../../core/utils';
+
 
 export class TableComponent extends Component {
   constructor() {
@@ -11,8 +13,6 @@ export class TableComponent extends Component {
   }
 
   onMousedown(event) {
-    console.log('MouseDOWN event');
-
     const whatResizing = event.target.dataset.whatResizing;
 
     if (whatResizing === undefined) {
@@ -25,46 +25,45 @@ export class TableComponent extends Component {
     let newWidth;
     let newHeight;
 
-    $resizer.style.opacity = '1';
+    css($resizer, {
+      opacity: '1',
+      [whatResizing === 'col' ? 'bottom' : 'right']: '-4000px',
+    });
 
     document.onmousemove = (e) => {
-      console.log('MouseMOVE event');
-
       if (whatResizing === 'col') {
         const delta = e.pageX - coords.right;
         newWidth = coords.width + delta + 'px';
 
-        $resizer.style.right = -delta + 'px';
-        $resizer.style.bottom = '-3000px';
-      } else if (whatResizing === 'row') {
+        css($resizer, {right: -delta + 'px'});
+      } else {
         const delta = e.pageY - coords.bottom;
         newHeight = coords.height + delta + 'px';
 
-        $resizer.style.bottom = -delta + 'px';
-        $resizer.style.right = '-4000px';
+        css($resizer, {bottom: -delta + 'px'});
       }
     };
 
     document.onmouseup = () => {
-      console.log('MouseUP event');
-      document.onmousemove = null;
-      document.onmouseup = null;
-
       if (whatResizing === 'col') {
         const cellsToResize = this.$root.querySelectorAll(`[data-x="${$resizedHeaderCell.dataset.x}"]`);
 
-        $resizedHeaderCell.style.width = newWidth;
-        cellsToResize.forEach(($cell) => {
-          $cell.style.width = newWidth;
-        });
+        css($resizedHeaderCell, {width: newWidth});
 
-        $resizer.style.right = '0px';
-      } else if (whatResizing === 'row') {
-        $resizedHeaderCell.style.height = newHeight;
-        $resizer.style.bottom = '0px';
+        cellsToResize.forEach(($cell) => {
+          css($cell, {width: newWidth});
+        });
+      } else {
+        css($resizedHeaderCell, {height: newHeight});
       }
 
-      $resizer.style.opacity = '0';
+      css($resizer, {
+        opacity: '0',
+        [whatResizing === 'col' ? 'right' : 'bottom']: '0px',
+      });
+
+      document.onmousemove = null;
+      document.onmouseup = null;
     };
   }
 }
