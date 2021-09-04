@@ -59,7 +59,8 @@ export class TableComponent extends Component {
 
       css($resizer, {
         opacity: '0',
-        [whatResizing === 'col' ? 'right' : 'bottom']: '0px',
+        right: '0',
+        bottom: '0',
       });
 
       document.onmousemove = null;
