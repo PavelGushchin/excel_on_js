@@ -1,5 +1,7 @@
 # Clone of Microsoft Excel
 
+### The project is under development!
+
 ## How to run the project
 ```shell
 git clone https://github.com/PavelGushchin/excel_on_js.git
