@@ -1,7 +1,7 @@
-export function createTable(WIDTH = 26, HEIGHT = 50) {
+export function createTable(width = 26, height = 50) {
   const rows = [];
 
-  const headerRow = new Array(WIDTH)
+  const headerRow = new Array(width)
       .fill('')
       .map(convertToLetter)
       .map(convertToHeaderCell)
@@ -10,14 +10,14 @@ export function createTable(WIDTH = 26, HEIGHT = 50) {
 
   rows.push(createRow(headerRow));
 
-  for (let index = 1; index <= HEIGHT; index++) {
-    const row = new Array(WIDTH)
+  for (let rowLineIndex = 1; rowLineIndex <= height; rowLineIndex++) {
+    const row = new Array(width)
         .fill('')
-        .map(convertToCell)
+        .map(convertToCell(rowLineIndex))
         .join('')
     ;
 
-    rows.push(createRow(row, index));
+    rows.push(createRow(row, rowLineIndex));
   }
 
   return rows.join('');
@@ -35,17 +35,19 @@ function convertToLetter(_, index) {
 
 function convertToHeaderCell(letter, index) {
   return `
-      <div class="column" data-resizable="true" data-x="${index}">
+      <div class="column" data-resizable="true" data-x="${index + 1}">
           ${letter}
           <div class="col-resizer" data-what-resizing="col"></div>
       </div>
   `;
 }
 
-function convertToCell(_, index) {
-  return `
-      <div class="cell" contenteditable data-x="${index}"></div>
-  `;
+function convertToCell(rowLineIndex) {
+  return function(_, index) {
+    return `
+        <div class="cell" contenteditable data-x="${index + 1}" data-y="${rowLineIndex}"></div>
+    `;
+  };
 }
 
 function createRow(content, index = 0) {
