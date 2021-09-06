@@ -1,14 +1,14 @@
 import {css} from '../../core/utils';
 
 
-export function shouldResize(event) {
-  const whatResizing = event.target.dataset.whatResizing;
+// export function shouldResize(event) {
+//   const whatResizing = event.target.dataset.whatResizing;
+//
+//   return whatResizing === 'col' || whatResizing === 'row';
+// }
 
-  return whatResizing === 'col' || whatResizing === 'row';
-}
 
-
-export function resizeHandler(event, $root) {
+export function resize(event, $root) {
   const $resizer = event.target;
   const $resizedHeaderCell = $resizer.closest('[data-resizable="true"]');
   const coords = $resizedHeaderCell.getBoundingClientRect();
@@ -28,7 +28,7 @@ export function resizeHandler(event, $root) {
       newWidth = coords.width + delta + 'px';
 
       css($resizer, {right: -delta + 'px'});
-    } else {
+    } else if (whatResizing === 'row') {
       const delta = e.pageY - coords.bottom;
       newHeight = coords.height + delta + 'px';
 
@@ -45,7 +45,7 @@ export function resizeHandler(event, $root) {
       cellsToResize.forEach(($cell) => {
         css($cell, {width: newWidth});
       });
-    } else {
+    } else if (whatResizing === 'row') {
       css($resizedHeaderCell, {height: newHeight});
     }
 

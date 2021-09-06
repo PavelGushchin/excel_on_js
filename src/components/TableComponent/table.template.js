@@ -37,7 +37,7 @@ function convertToHeaderCell(letter, index) {
   return `
       <div class="column" data-resizable="true" data-x="${index + 1}">
           ${letter}
-          <div class="col-resizer" data-what-resizing="col"></div>
+          <div class="col-resizer" data-type="resizer" data-what-resizing="col"></div>
       </div>
   `;
 }
@@ -45,13 +45,13 @@ function convertToHeaderCell(letter, index) {
 function convertToCell(rowLineIndex) {
   return function(_, index) {
     return `
-        <div class="cell" contenteditable data-x="${index + 1}" data-y="${rowLineIndex}"></div>
+        <div class="cell" data-type="cell" data-x="${index + 1}" data-y="${rowLineIndex}" contenteditable></div>
     `;
   };
 }
 
 function createRow(content, index = 0) {
-  const resizer = '<div class="row-resizer" data-what-resizing="row"></div>';
+  const resizer = '<div class="row-resizer" data-type="resizer" data-what-resizing="row"></div>';
 
   return `
       <div class="row" data-resizable="true">

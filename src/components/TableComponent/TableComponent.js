@@ -1,6 +1,6 @@
 import {Component} from '../Component';
 import {createTable} from './table.template';
-import {resizeHandler, shouldResize} from './table.resizing';
+import {resize} from './table.resizing';
 
 
 export class TableComponent extends Component {
@@ -15,15 +15,31 @@ export class TableComponent extends Component {
   }
 
   selectCell(x, y) {
-    const $cell = this.$root.querySelector(`[data-x="${x}"][data-y="${y}"]`);
-    $cell.classList.add('selected');
+    this.clearSelection();
 
-    this.selectedCells = [$cell];
+    const $cell = this.$root.querySelector(`[data-x="${x}"][data-y="${y}"]`);
+    this.selectedCells.push($cell);
+
+    $cell.classList.add('selected');
+  }
+
+  clearSelection() {
+    this.selectedCells.forEach(($cell) => {
+      $cell.classList.remove('selected');
+    });
+
+    this.selectedCells = [];
   }
 
   onMousedown(event) {
-    if (shouldResize(event)) {
-      resizeHandler(event, this.$root);
+    switch (event.target.dataset.type) {
+      case 'resizer':
+        resize(event, this.$root);
+        break;
+      case 'cell':
+        const data = event.target.dataset;
+        this.selectCell(data.x, data.y);
+        break;
     }
   }
 }
