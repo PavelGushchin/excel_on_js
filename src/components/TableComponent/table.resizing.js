@@ -1,13 +1,6 @@
 import {css} from '../../core/utils';
 
 
-// export function shouldResize(event) {
-//   const whatResizing = event.target.dataset.whatResizing;
-//
-//   return whatResizing === 'col' || whatResizing === 'row';
-// }
-
-
 export function resize(event, $root) {
   const $resizer = event.target;
   const $resizedHeaderCell = $resizer.closest('[data-resizable="true"]');

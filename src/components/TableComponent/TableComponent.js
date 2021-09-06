@@ -1,29 +1,41 @@
 import {Component} from '../Component';
-import {createTable} from './table.template';
+import {createTableInHtml} from './table.template';
 import {resize} from './table.resizing';
 
 
 export class TableComponent extends Component {
+  static WIDTH = 26;
+  static HEIGHT = 50;
+
   constructor() {
     super('div', 'excel__table', ['mousedown']);
+
     this.selectedCells = [];
-    this.selectCell(1, 1);
+    this.$currentCell = this.getCell(1, 1);
+    this.select(this.$currentCell);
   }
 
   content() {
-    return createTable();
+    return createTableInHtml();
   }
 
-  selectCell(x, y) {
-    this.clearSelection();
+  getCell(x, y) {
+    return this.$root.querySelector(`[data-x="${x}"][data-y="${y}"]`);
+  }
 
-    const $cell = this.$root.querySelector(`[data-x="${x}"][data-y="${y}"]`);
+  select($cell) {
+    this.clear();
+
     this.selectedCells.push($cell);
-
+    this.$currentCell = $cell;
     $cell.classList.add('selected');
   }
 
-  clearSelection() {
+  selectMany($startCell, $endCell) {
+
+  }
+
+  clear() {
     this.selectedCells.forEach(($cell) => {
       $cell.classList.remove('selected');
     });
@@ -32,14 +44,14 @@ export class TableComponent extends Component {
   }
 
   onMousedown(event) {
-    switch (event.target.dataset.type) {
-      case 'resizer':
-        resize(event, this.$root);
-        break;
-      case 'cell':
-        const data = event.target.dataset;
-        this.selectCell(data.x, data.y);
-        break;
+    const dataset = event.target.dataset;
+
+    if (dataset.type === 'resizer') {
+      resize(event, this.$root);
+    } else if (dataset.type === 'cell') {
+      this.select(
+          this.getCell(dataset.x, dataset.y)
+      );
     }
   }
 }

@@ -1,7 +1,9 @@
-export function createTable(width = 26, height = 50) {
+import {TableComponent} from './TableComponent';
+
+export function createTableInHtml() {
   const rows = [];
 
-  const headerRow = new Array(width)
+  const headerRow = new Array(TableComponent.WIDTH)
       .fill('')
       .map(convertToLetter)
       .map(convertToHeaderCell)
@@ -10,8 +12,8 @@ export function createTable(width = 26, height = 50) {
 
   rows.push(createRow(headerRow));
 
-  for (let rowLineIndex = 1; rowLineIndex <= height; rowLineIndex++) {
-    const row = new Array(width)
+  for (let rowLineIndex = 1; rowLineIndex <= TableComponent.HEIGHT; rowLineIndex++) {
+    const row = new Array(TableComponent.WIDTH)
         .fill('')
         .map(convertToCell(rowLineIndex))
         .join('')
