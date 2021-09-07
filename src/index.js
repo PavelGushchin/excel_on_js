@@ -1,16 +1,16 @@
 import {Excel} from './core/Excel';
-import {HeaderComponent} from './components/HeaderComponent';
-import {ToolbarComponent} from './components/ToolbarComponent';
-import {FormulaComponent} from './components/FormulaComponent';
-import {TableComponent} from './components/TableComponent/TableComponent';
+import {Header} from './components/HeaderComponent/Header';
+import {Toolbar} from './components/ToolbarComponent/Toolbar';
+import {Formula} from './components/FormulaComponent/Formula';
+import {Table} from './components/TableComponent/Table';
 import './scss/index.scss';
 
 const excel = new Excel({
   components: [
-    new HeaderComponent,
-    new ToolbarComponent,
-    new FormulaComponent,
-    new TableComponent,
+    new Header,
+    new Toolbar,
+    new Formula,
+    new Table,
   ],
 });
 

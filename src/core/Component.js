@@ -1,4 +1,4 @@
-import {capitalizeFirstLetter} from '../core/utils';
+import {capitalizeFirstLetter} from './utils';
 
 export class Component {
   constructor(rootTag, rootClass, listeners = []) {

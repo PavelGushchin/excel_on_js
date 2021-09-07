@@ -1,9 +1,9 @@
-import {Component} from '../Component';
+import {Component} from '../../core/Component';
 import {createTableInHtml} from './table.template';
 import {resize} from './table.resizing';
 
 
-export class TableComponent extends Component {
+export class Table extends Component {
   static WIDTH = 26;
   static HEIGHT = 50;
 

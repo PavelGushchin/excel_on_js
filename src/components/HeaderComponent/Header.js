@@ -1,6 +1,6 @@
-import {Component} from './Component';
+import {Component} from '../../core/Component';
 
-export class HeaderComponent extends Component {
+export class Header extends Component {
   constructor() {
     super('div', 'excel__header');
   }

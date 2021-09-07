@@ -1,6 +1,6 @@
-import {Component} from './Component';
+import {Component} from '../../core/Component';
 
-export class FormulaComponent extends Component {
+export class Formula extends Component {
   constructor() {
     super('div', 'excel__formula', ['input', 'click']);
   }

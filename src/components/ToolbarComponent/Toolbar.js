@@ -1,6 +1,6 @@
-import {Component} from './Component';
+import {Component} from '../../core/Component';
 
-export class ToolbarComponent extends Component {
+export class Toolbar extends Component {
   constructor() {
     super('div', 'excel__toolbar');
   }
