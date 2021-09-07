@@ -12,7 +12,7 @@ export class TableComponent extends Component {
 
     this.selectedCells = [];
     this.$currentCell = this.getCell(1, 1);
-    this.select(this.$currentCell);
+    this.selectCell(this.$currentCell);
   }
 
   content() {
@@ -23,19 +23,39 @@ export class TableComponent extends Component {
     return this.$root.querySelector(`[data-x="${x}"][data-y="${y}"]`);
   }
 
-  select($cell) {
-    this.clear();
-
+  selectCell($cell) {
     this.selectedCells.push($cell);
     this.$currentCell = $cell;
     $cell.classList.add('selected');
   }
 
-  selectMany($startCell, $endCell) {
+  selectManyCells($startCell, $endCell) {
+    let startX = parseInt($startCell.dataset.x);
+    let startY = parseInt($startCell.dataset.y);
 
+    let endX = parseInt($endCell.dataset.x);
+    let endY = parseInt($endCell.dataset.y);
+
+    if (startX > endX) {
+      [startX, endX] = [endX, startX];
+    }
+
+    if (startY > endY) {
+      [startY, endY] = [endY, startY];
+    }
+
+    for (let i = startX; i <= endX; i++) {
+      for (let j = startY; j <= endY; j++) {
+        const $cell = this.getCell(i, j);
+        this.selectedCells.push($cell);
+        $cell.classList.add('selected');
+      }
+    }
+
+    this.$currentCell = $startCell;
   }
 
-  clear() {
+  clearPreviousSelection() {
     this.selectedCells.forEach(($cell) => {
       $cell.classList.remove('selected');
     });
@@ -49,9 +69,17 @@ export class TableComponent extends Component {
     if (dataset.type === 'resizer') {
       resize(event, this.$root);
     } else if (dataset.type === 'cell') {
-      this.select(
-          this.getCell(dataset.x, dataset.y)
-      );
+      const $clickedCell = this.getCell(dataset.x, dataset.y);
+
+      if (event.shiftKey) {
+        this.clearPreviousSelection();
+        this.selectManyCells(this.$currentCell, $clickedCell);
+      } else if (event.ctrlKey) {
+        this.selectCell($clickedCell);
+      } else {
+        this.clearPreviousSelection();
+        this.selectCell($clickedCell);
+      }
     }
   }
 }
