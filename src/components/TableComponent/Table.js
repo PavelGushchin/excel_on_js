@@ -8,7 +8,7 @@ export class Table extends Component {
   static HEIGHT = 50;
 
   constructor() {
-    super('div', 'excel__table', ['mousedown']);
+    super('div', 'excel__table', ['mousedown', 'keydown']);
 
     this.selectedCells = [];
     this.$currentCell = this.getCell(1, 1);
@@ -27,6 +27,7 @@ export class Table extends Component {
     this.selectedCells.push($cell);
     this.$currentCell = $cell;
     $cell.classList.add('selected');
+    $cell.focus();
   }
 
   selectManyCells($startCell, $endCell) {
@@ -81,5 +82,33 @@ export class Table extends Component {
         this.selectCell($clickedCell);
       }
     }
+  }
+
+  onKeydown(event) {
+    let nextCellX = parseInt(this.$currentCell.dataset.x);
+    let nextCellY = parseInt(this.$currentCell.dataset.y);
+
+    switch (event.key) {
+      case 'ArrowDown':
+      case 'Enter':
+        event.preventDefault();
+        nextCellY = nextCellY + 1 > Table.HEIGHT ? Table.HEIGHT : nextCellY + 1;
+        break;
+      case 'ArrowRight':
+      case 'Tab':
+        event.preventDefault();
+        nextCellX = nextCellX + 1 > Table.WIDTH ? Table.WIDTH : nextCellX + 1;
+        break;
+      case 'ArrowLeft':
+        nextCellX = nextCellX - 1 < 1 ? 1 : nextCellX - 1;
+        break;
+      case 'ArrowUp':
+        nextCellY = nextCellY - 1 < 1 ? 1 : nextCellY - 1;
+        break;
+    }
+
+    const $nextCell = this.getCell(nextCellX, nextCellY);
+    this.clearPreviousSelection();
+    this.selectCell($nextCell);
   }
 }
