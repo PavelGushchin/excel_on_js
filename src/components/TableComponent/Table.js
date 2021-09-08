@@ -11,8 +11,11 @@ export class Table extends Component {
     super('div', 'excel__table', ['mousedown', 'keydown']);
 
     this.selectedCells = [];
-    this.$currentCell = this.getCell(1, 1);
-    this.selectCell(this.$currentCell);
+    this.$currentCell = null;
+  }
+
+  init() {
+    this.selectCell(this.getCell(1, 1));
   }
 
   content() {

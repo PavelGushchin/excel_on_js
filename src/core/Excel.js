@@ -8,6 +8,7 @@ export class Excel {
 
     this.components.forEach((component) => {
       $mainContainer.append(component.getRootElement());
+      component.init();
     });
   }
 }

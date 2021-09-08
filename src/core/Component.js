@@ -9,6 +9,8 @@ export class Component {
     this.registerDOMListeners(listeners);
   }
 
+  init() {}
+
   content() {
     return `You have to override this method for ${this.$root}!`;
   }
