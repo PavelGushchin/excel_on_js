@@ -1,4 +1,4 @@
-export class Emitter {
+export class Dispatcher {
   constructor() {
     this.listeners = {};
   }
@@ -14,8 +14,8 @@ export class Emitter {
     };
   }
 
-  emit(event, ...args) {
-    if (!this.listeners[event]) {
+  dispatch(event, ...args) {
+    if (! this.listeners[event]) {
       return false;
     }
 

@@ -1,20 +1,20 @@
 import {capitalizeFirstLetter} from './utils';
-import {Emitter} from './Emitter';
 
 export class Component {
-  constructor(rootTag, rootClass, listeners = []) {
-    this.$root = document.createElement(rootTag);
-    this.$root.classList.add(rootClass);
+  constructor(componentName, listeners = []) {
+    this.componentName = componentName.toUpperCase();
+
+    this.$root = document.createElement('div');
+    this.$root.classList.add(`excel__${componentName.toLowerCase()}`);
     this.$root.innerHTML = this.content();
 
-    this.emitter = new Emitter();
     this.unsubscribers = [];
 
     this.registerDOMListeners(listeners);
   }
 
   content() {
-    return `You have to override this method for ${this.$root}!`;
+    return `You have to override this method in ${this.componentName} component!`;
   }
 
   getHtml() {
@@ -25,21 +25,21 @@ export class Component {
     return this.$root;
   }
 
-  init() {}
+  subscribe(event, callback) {
+    if (! this.dispatcher) {
+      throw new Error(`Dispatcher isn't set in ${this.componentName} component`);
+    }
 
-  destroy() {
-    this.unsubscribers.forEach((unsub) => {
-      unsub();
-    });
-  }
-
-  on(event, callback) {
-    const unsub = this.emitter.subscribe(event, callback);
+    const unsub = this.dispatcher.subscribe(event, callback);
     this.unsubscribers.push(unsub);
   }
 
   dispatch(event, ...args) {
-    this.emitter.emit(event, ...args);
+    if (! this.dispatcher) {
+      throw new Error(`Dispatcher isn't set in ${this.componentName} component`);
+    }
+
+    this.dispatcher.dispatch(event, ...args);
   }
 
   registerDOMListeners(listeners) {
@@ -49,7 +49,7 @@ export class Component {
       const methodName = getMethodName(listener);
 
       if (! this[methodName]) {
-        throw new Error(`Method "${methodName}" is not defined in ${this.$root}!`);
+        throw new Error(`Method "${methodName}" is not defined in ${this.componentName} component!`);
       }
 
       this[methodName] = this[methodName].bind(this);
@@ -67,6 +67,19 @@ export class Component {
           this.listeners.splice(index, 1);
         }
       });
+    });
+  }
+
+  init() {}
+
+  setDispatcher(dispatcher) {
+    this.dispatcher = dispatcher;
+    return this;
+  }
+
+  destroy() {
+    this.unsubscribers.forEach((unsub) => {
+      unsub();
     });
   }
 }

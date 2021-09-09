@@ -1,14 +1,19 @@
+import {Dispatcher} from './Dispatcher';
+
 export class Excel {
-  constructor(options) {
-    this.components = options.components || [];
+  constructor(components = []) {
+    this.components = components;
+    this.dispatcher = new Dispatcher();
   }
 
   render(selector) {
     const $mainContainer = document.querySelector(selector);
 
-    this.components.forEach((component) => {
+    this.components.forEach((Component) => {
+      const component = new Component();
       $mainContainer.append(component.getRootElement());
-      component.init();
+
+      component.setDispatcher(this.dispatcher).init();
     });
   }
 }

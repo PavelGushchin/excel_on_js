@@ -5,13 +5,6 @@ import {Formula} from './components/FormulaComponent/Formula';
 import {Table} from './components/TableComponent/Table';
 import './scss/index.scss';
 
-const excel = new Excel({
-  components: [
-    new Header,
-    new Toolbar,
-    new Formula,
-    new Table,
-  ],
-});
+const excel = new Excel([Header, Toolbar, Formula, Table]);
 
 excel.render('#app');

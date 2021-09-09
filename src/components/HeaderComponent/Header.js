@@ -2,7 +2,7 @@ import {Component} from '../../core/Component';
 
 export class Header extends Component {
   constructor() {
-    super('div', 'excel__header');
+    super('Header');
   }
 
   content() {

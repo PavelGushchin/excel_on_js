@@ -8,14 +8,20 @@ export class Table extends Component {
   static HEIGHT = 50;
 
   constructor() {
-    super('div', 'excel__table', ['mousedown', 'keydown']);
+    super('Table', ['mousedown', 'keydown']);
 
     this.selectedCells = [];
-    this.$currentCell = null;
+    this.$currentCell = this.getCell(1, 1);
   }
 
   init() {
-    this.selectCell(this.getCell(1, 1));
+    super.init();
+
+    this.selectCell(this.$currentCell);
+
+    this.subscribe('formula:enter', () => {
+      this.$currentCell.focus();
+    });
   }
 
   content() {
