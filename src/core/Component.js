@@ -1,4 +1,5 @@
 import {capitalizeFirstLetter} from './utils';
+import {Emitter} from './Emitter';
 
 export class Component {
   constructor(rootTag, rootClass, listeners = []) {
@@ -6,10 +7,11 @@ export class Component {
     this.$root.classList.add(rootClass);
     this.$root.innerHTML = this.content();
 
+    this.emitter = new Emitter();
+    this.unsubscribers = [];
+
     this.registerDOMListeners(listeners);
   }
-
-  init() {}
 
   content() {
     return `You have to override this method for ${this.$root}!`;
@@ -21,6 +23,23 @@ export class Component {
 
   getRootElement() {
     return this.$root;
+  }
+
+  init() {}
+
+  destroy() {
+    this.unsubscribers.forEach((unsub) => {
+      unsub();
+    });
+  }
+
+  on(event, callback) {
+    const unsub = this.emitter.subscribe(event, callback);
+    this.unsubscribers.push(unsub);
+  }
+
+  dispatch(event, ...args) {
+    this.emitter.emit(event, ...args);
   }
 
   registerDOMListeners(listeners) {
