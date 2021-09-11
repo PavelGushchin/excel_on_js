@@ -8,7 +8,7 @@ export class Table extends Component {
   static HEIGHT = 50;
 
   constructor() {
-    super('Table', ['mousedown', 'keydown']);
+    super('Table', ['mousedown', 'keydown', 'input']);
 
     this.selectedCells = [];
     this.$currentCell = this.getCell(1, 1);
@@ -19,7 +19,11 @@ export class Table extends Component {
 
     this.selectCell(this.$currentCell);
 
-    this.subscribe('formula:enter', () => {
+    this.subscribe('formula:input', (text) => {
+      this.$currentCell.textContent = text;
+    });
+
+    this.subscribe('formula:done', () => {
       this.$currentCell.focus();
     });
   }
@@ -37,6 +41,8 @@ export class Table extends Component {
     this.$currentCell = $cell;
     $cell.classList.add('selected');
     $cell.focus();
+
+    this.dispatch('table:cell:selected', $cell.textContent);
   }
 
   selectManyCells($startCell, $endCell) {
@@ -119,5 +125,9 @@ export class Table extends Component {
     const $nextCell = this.getCell(nextCellX, nextCellY);
     this.clearPreviousSelection();
     this.selectCell($nextCell);
+  }
+
+  onInput(event) {
+    this.dispatch('table:input', event.target.textContent);
   }
 }

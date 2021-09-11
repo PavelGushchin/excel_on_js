@@ -16,4 +16,10 @@ export class Excel {
       component.setDispatcher(this.dispatcher).init();
     });
   }
+
+  destroy() {
+    this.components.forEach((component) => {
+      component.destroy();
+    });
+  }
 }
